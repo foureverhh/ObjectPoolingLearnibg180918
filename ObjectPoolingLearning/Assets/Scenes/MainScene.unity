@@ -220,8 +220,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cannonBallPrefab: {fileID: 1081360553342656, guid: 79093330547b0c841b7837b6025f1a1a,
     type: 2}
-  delay: 0.3
+  delay: 0.5
   speed: 1000
+  cannonBallPool: []
+  poolSize: 20
 --- !u!212 &850529406
 SpriteRenderer:
   m_ObjectHideFlags: 0
