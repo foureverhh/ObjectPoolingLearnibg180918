@@ -8,8 +8,10 @@ public class CannonController : MonoBehaviour {
     public float delay = 0.3f;
     public float speed = 5f;
 
-    public List<GameObject> cannonBallPool;
     public int poolSize = 20;
+    public bool expandablePoolSize = true;
+
+    public List<GameObject> cannonBallPool;
 
     // Use this for initialization
     void Start () {
@@ -41,11 +43,28 @@ public class CannonController : MonoBehaviour {
     GameObject GetCannonBall()
     {
         for(int i = 0; i < cannonBallPool.Count; i++)
-        { 
+        {
+            if (cannonBallPool[i] == null)
+            {
+                GameObject cannonBall = Instantiate(cannonBallPrefab);
+                cannonBallPool[i] = cannonBall;
+                cannonBall.SetActive(false);
+                return cannonBall;
+            }
+
             //if the ball is not visible retrieve it
-            if (!cannonBallPool[i].activeInHierarchy){
+            if (!cannonBallPool[i].activeInHierarchy)
+            {
                 return cannonBallPool[i];
             }
+        }
+
+        if (expandablePoolSize)
+        {
+            GameObject cannonBall = Instantiate(cannonBallPrefab);
+            cannonBallPool.Add(cannonBall);
+            cannonBall.SetActive(false);
+            return cannonBall;
         }
         return null;
     }
