@@ -11,16 +11,17 @@ public class CannonController : MonoBehaviour {
     public int poolSize = 20;
     public bool expandablePoolSize = true;
 
-    public List<GameObject> cannonBallPool;
+    public List<Rigidbody2D> cannonBallPool;
 
     // Use this for initialization
     void Start () {
-        cannonBallPool = new List<GameObject>();
+        cannonBallPool = new List<Rigidbody2D>();
+     
         for(int i= 0; i < poolSize; i++)
         {
             GameObject cannonBall = Instantiate(cannonBallPrefab);
             cannonBall.SetActive(false);
-            cannonBallPool.Add(cannonBall);
+            cannonBallPool.Add(cannonBall.GetComponent<Rigidbody2D>());
         }
         StartCoroutine(ShootCannon());
 	}
@@ -29,31 +30,31 @@ public class CannonController : MonoBehaviour {
     {
         while (true)
         {
-            GameObject cannonBall = GetCannonBall();//Instantiate(cannonBallPrefab);
+            Rigidbody2D cannonBall = GetCannonBall();//Instantiate(cannonBallPrefab);
             if(cannonBall != null)
             {
-                cannonBall.SetActive(true);
-                cannonBall.transform.position = gameObject.transform.position;
-                cannonBall.GetComponent<Rigidbody2D>().AddForce(Vector2.right * speed);
+                cannonBall.gameObject.SetActive(true);
+                cannonBall.gameObject.transform.position = gameObject.transform.position;
+                cannonBall.AddForce(Vector2.right * speed);
             }
             yield return new WaitForSeconds(delay); 
         }  
     }
 
-    GameObject GetCannonBall()
+    Rigidbody2D GetCannonBall()
     {
         for(int i = 0; i < cannonBallPool.Count; i++)
         {
             if (cannonBallPool[i] == null)
             {
                 GameObject cannonBall = Instantiate(cannonBallPrefab);
-                cannonBallPool[i] = cannonBall;
+                cannonBallPool[i] = cannonBall.GetComponent<Rigidbody2D>();
                 cannonBall.SetActive(false);
-                return cannonBall;
+                return cannonBall.GetComponent<Rigidbody2D>();
             }
 
             //if the ball is not visible retrieve it
-            if (!cannonBallPool[i].activeInHierarchy)
+            if (!cannonBallPool[i].gameObject.activeInHierarchy)
             {
                 return cannonBallPool[i];
             }
@@ -62,9 +63,9 @@ public class CannonController : MonoBehaviour {
         if (expandablePoolSize)
         {
             GameObject cannonBall = Instantiate(cannonBallPrefab);
-            cannonBallPool.Add(cannonBall);
+            cannonBallPool.Add(cannonBall.GetComponent<Rigidbody2D>());
             cannonBall.SetActive(false);
-            return cannonBall;
+            return cannonBall.GetComponent<Rigidbody2D>();
         }
         return null;
     }
